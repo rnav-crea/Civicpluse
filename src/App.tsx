@@ -375,8 +375,8 @@ export default function App() {
               🏘️
             </div>
             <div>
-              <h1 className="font-display font-black text-white text-xs sm:text-base tracking-tight leading-none uppercase">Community Hero</h1>
-              <span className="text-[9px] sm:text-[10px] text-red-500 font-bold tracking-wider uppercase block mt-0.5">Civic AI Intake</span>
+              <h1 className="font-display font-black text-white text-xs sm:text-base tracking-tight leading-none uppercase">Civicpluse</h1>
+              <span className="text-[9px] sm:text-[10px] text-red-500 font-bold tracking-wider uppercase block mt-0.5">Civicpluse AI Intake</span>
             </div>
           </div>
 

@@ -1,6 +1,6 @@
-# Vibe 2 Ship Hackathon Submission: Civic AI - Community Hero
+# Vibe 2 Ship Hackathon Submission: Civicpluse
 
-**Project Name:** Civic AI: Community Hero  
+**Project Name:** Civicpluse  
 **Tagline:** Bridging the gap between citizen reporting and municipal accountability using AI.
 
 ---
@@ -9,7 +9,7 @@
 
 Civic reporting apps usually fail because of a lack of two-sided accountability. Citizens post photos of potholed roads, broken streetlights, or water leakage, but these reports sit passively in database records without being routed to the correct departments or verified upon completion.
 
-**Community Hero** transforms the civic reporting cycle into a fully authenticated, two-sided workflow:
+**Civicpluse** transforms the civic reporting cycle into a fully authenticated, two-sided workflow:
 1.  **AI-Powered Intake:** When a resident snaps a photo, **Google Gemini 2.5 Flash** validates whether the hazard is a real civic issue, details the severity, explains the risks, and automatically routes the ticket to the correct department.
 2.  **Safety Navigation:** A **Safe Route Planner** allows users to map a path across the city and scan for active on-route hazards, calculating a Route Safety Index (0-100%) and offering safety recommendations.
 3.  **Role-Locked Resolution:** Resolution of issues is restricted to verified municipal officers (using security checks and passcode `VIZAG-GOV-2026`). Officers must upload photographic validation of the fix to close a ticket, closing the loop.
@@ -74,11 +74,11 @@ gcloud app deploy
 ### Deploying to Cloud Run (Recommended for serverless scalability)
 ```bash
 # Build and submit the container to Artifact Registry
-gcloud builds submit --tag gcr.io/YOUR_PROJECT_ID/community-hero
+gcloud builds submit --tag gcr.io/YOUR_PROJECT_ID/civicpluse
 
 # Deploy on Cloud Run (Exposes on Port 8080)
-gcloud run deploy community-hero \
-  --image gcr.io/YOUR_PROJECT_ID/community-hero \
+gcloud run deploy civicpluse \
+  --image gcr.io/YOUR_PROJECT_ID/civicpluse \
   --platform managed \
   --allow-unauthenticated
 ```

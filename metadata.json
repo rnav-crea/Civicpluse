@@ -1,5 +1,5 @@
 {
-  "name": "Community Hero",
+  "name": "Civicpluse",
   "description": "An AI-powered civic intelligence platform that sees, validates, categorizes, and escalates hyperlocal community issues autonomously.",
   "requestFramePermissions": ["geolocation"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]

@@ -349,7 +349,7 @@ export default function ProfileTab({ profile, onSaveProfile, myReports, allIssue
           CIVIC INTELLIGENCE CHARTER
         </h4>
         <p className="text-xs text-gray-400 leading-relaxed font-serif">
-          Community Hero is built to empower local residents to maintain urban environments using state-of-the-art vision and thinking models. Each submitted issue is parsed, analyzed, severity-rated, routed, and monitored autonomously.
+          Civicpluse is built to empower local residents to maintain urban environments using state-of-the-art vision and thinking models. Each submitted issue is parsed, analyzed, severity-rated, routed, and monitored autonomously.
         </p>
         <p className="text-[10px] text-gray-500 leading-normal">
           Developed for Vibe2Ship Hackathon 2026 — Coding Ninjas &times; Google for Developers. Powered by Google Gemini-3.1-pro-preview with High Thinking reasoning.
