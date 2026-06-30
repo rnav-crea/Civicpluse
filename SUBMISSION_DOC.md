@@ -65,7 +65,7 @@ Make sure you have Google Cloud SDK installed, then run:
 ```bash
 # Login and set your project
 gcloud auth login
-gcloud config set project YOUR_PROJECT_ID
+gcloud config set project lucky-function-498807-p7
 
 # Deploy the app (Vite build runs automatically during setup)
 gcloud app deploy
@@ -74,11 +74,11 @@ gcloud app deploy
 ### Deploying to Cloud Run (Recommended for serverless scalability)
 ```bash
 # Build and submit the container to Artifact Registry
-gcloud builds submit --tag gcr.io/YOUR_PROJECT_ID/civicpluse
+gcloud builds submit --tag gcr.io/lucky-function-498807-p7/civicpluse
 
 # Deploy on Cloud Run (Exposes on Port 8080)
 gcloud run deploy civicpluse \
-  --image gcr.io/YOUR_PROJECT_ID/civicpluse \
+  --image gcr.io/lucky-function-498807-p7/civicpluse \
   --platform managed \
   --allow-unauthenticated
 ```
