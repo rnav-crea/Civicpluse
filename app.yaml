@@ -1,0 +1,14 @@
+runtime: nodejs20
+instance_class: F1
+
+# Use the package.json scripts to start the server
+entrypoint: npm run start
+
+# Automatically build Vite during deployment
+gcp_build_action: npm run build
+
+# Define placeholders for env variables (configure real values in App Engine settings or replace here)
+env_variables:
+  NODE_ENV: "production"
+  GEMINI_API_KEY: "YOUR_GEMINI_API_KEY"
+  GOOGLE_MAPS_PLATFORM_KEY: "YOUR_GOOGLE_MAPS_PLATFORM_KEY"

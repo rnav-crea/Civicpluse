@@ -1,0 +1,9 @@
+node_modules
+npm-debug.log
+dist
+.env
+.git
+.gitignore
+README.md
+SUBMISSION_DOC.md
+C:\Users\rnave\.gemini\antigravity-ide\brain\*
