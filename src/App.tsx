@@ -26,15 +26,8 @@ export default function App() {
 
   // --- 1. Load data from localStorage on Mount ---
   useEffect(() => {
-    // Check express server API health
-    fetch('/api/config/status')
-      .then(res => res.json())
-      .then(data => {
-        setHasServerConnection(data.hasGeminiKey);
-      })
-      .catch(() => {
-        setHasServerConnection(false);
-      });
+    const hasKey = Boolean(import.meta.env.VITE_GEMINI_API_KEY);
+    setHasServerConnection(hasKey);
 
     const savedProfile = localStorage.getItem('ch_profile');
     const savedIssues = localStorage.getItem('ch_issues');

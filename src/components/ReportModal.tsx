@@ -362,14 +362,70 @@ export default function ReportModal({ isOpen, onClose, onSubmitSuccess, currentA
       // Step 2: Computer Vision detection
       updateStepStatus(2, 'running');
       
-      // We initiate the real network API request to our express server concurrently!
-      const apiPromise = fetch('/api/analyze', {
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY || "";
+      if (!apiKey) {
+        throw new Error("Gemini API Key is missing. Please configure VITE_GEMINI_API_KEY in your .env file or Settings -> Secrets.");
+      }
+
+      const mimeMatch = base64Image.match(/^data:(image\/\w+);base64,/);
+      const mimeType = mimeMatch ? mimeMatch[1] : "image/jpeg";
+      const base64Clean = base64Image.replace(/^data:image\/\w+;base64,/, "");
+
+      const promptText = `
+You are an expert hyperlocal civic issue validation AI.
+Your task is to analyze the uploaded image and the provided metadata to decide whether it depicts a real public municipal issue (e.g., potholes, clogged drainage, broken streetlights, illegal garbage dumping, pipe bursts, damaged parks/sidewalks, safety hazards) or an invalid/unrelated subject (e.g., selfies, personal documents, general indoor scenes, pets, general food, abstract graphics, etc.).
+
+Metadata provided:
+- Reported Location Name: ${finalLocName || "Unknown Location"}
+- User's Added Description: ${description || "none provided"}
+
+Please return a single JSON object. If the image does not show a valid public civic issue, set "isValidIssue" to false, and explain why in a friendly, polite tone in "rejectionReason" (e.g., "This image appears to be a personal selfie rather than a public civic issue. Please upload a clear photo of the hazard.").
+
+If it is a valid civic issue:
+- Set "isValidIssue" to true.
+- Set "rejectionReason" to null.
+- Classify the category into exactly one of: "pothole", "water_leak", "streetlight", "garbage", or "other".
+- Score the severity from 1 (minor issue) to 5 (critical safety hazard).
+- Provide a clear, 1-sentence explanation of why this severity was assigned in "severityReason".
+- Route the issue to the appropriate responsible Municipal Department (e.g. "Roads Department", "Water Supply & Sewerage", "Electricity Board", "Sanitation & Health", "Other").
+- Provide a professional, objective 2-sentence summary ("summary") describing the issue and its local community impact.
+      `.trim();
+
+      const apiPromise = fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          imageBase64: base64Image,
-          location: finalLocName,
-          description: description
+          contents: [
+            {
+              parts: [
+                {
+                  inlineData: {
+                    mimeType: mimeType,
+                    data: base64Clean
+                  }
+                },
+                {
+                  text: promptText
+                }
+              ]
+            }
+          ],
+          generationConfig: {
+            responseMimeType: "application/json",
+            responseSchema: {
+              type: "OBJECT",
+              properties: {
+                isValidIssue: { type: "BOOLEAN" },
+                rejectionReason: { type: "STRING" },
+                category: { type: "STRING" },
+                severity: { type: "INTEGER" },
+                severityReason: { type: "STRING" },
+                department: { type: "STRING" },
+                summary: { type: "STRING" }
+              },
+              required: ["isValidIssue", "category", "severity", "severityReason", "department", "summary"]
+            }
+          }
         })
       });
 
@@ -392,10 +448,16 @@ export default function ReportModal({ isOpen, onClose, onSubmitSuccess, currentA
       const response = await apiPromise;
       if (!response.ok) {
         const errData = await response.json().catch(() => ({}));
-        throw new Error(errData.error || "The server failed to analyze the image using Gemini.");
+        throw new Error(errData.error?.message || "Failed to analyze the image using Google Gemini API directly.");
       }
 
-      const result: GeminiAnalysisResult = await response.json();
+      const resData = await response.json();
+      if (!resData.candidates || !resData.candidates[0]?.content?.parts[0]?.text) {
+        throw new Error("Received an empty response from Gemini API.");
+      }
+
+      const rawText = resData.candidates[0].content.parts[0].text;
+      const result: GeminiAnalysisResult = JSON.parse(rawText.trim());
       console.log("Gemini Analysis result:", result);
 
       updateStepStatus(5, 'success');

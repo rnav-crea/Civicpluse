@@ -12,6 +12,9 @@ node_modules
 dist
 dist-ssr
 *.local
+temp-gcloud/
+temp-gcloud
+
 
 # Environment variables (Crucial for API keys security)
 .env
