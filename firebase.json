@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "lucky-function-498807-p7",
     "public": "dist",
     "ignore": [
       "firebase.json",
